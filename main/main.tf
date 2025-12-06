@@ -41,35 +41,36 @@ module "artifact_registry" {
 module "gke" {
   source = "../modules/gke"
 
-  project_id                     = var.project_id
-  cluster_name                   = var.gke_cluster_name
-  location                       = var.gke_location
-  network                        = module.network.network_self_link
-  subnetwork                     = module.network.subnet_self_link
-  pods_secondary_range_name      = module.network.pods_secondary_range.name
-  services_secondary_range_name  = module.network.services_secondary_range.name
-  master_ipv4_cidr_block         = var.gke_master_ipv4_cidr_block
-  release_channel                = var.gke_release_channel
-  kubernetes_version             = var.gke_kubernetes_version
-  enable_private_nodes           = var.gke_enable_private_nodes
-  enable_private_endpoint        = var.gke_enable_private_endpoint
+  project_id                        = var.project_id
+  cluster_name                      = var.gke_cluster_name
+  location                          = var.gke_location
+  network                           = module.network.network_self_link
+  subnetwork                        = module.network.subnet_self_link
+  pods_secondary_range_name         = module.network.pods_secondary_range.name
+  services_secondary_range_name     = module.network.services_secondary_range.name
+  master_ipv4_cidr_block            = var.gke_master_ipv4_cidr_block
+  release_channel                   = var.gke_release_channel
+  kubernetes_version                = var.gke_kubernetes_version
+  enable_private_nodes              = var.gke_enable_private_nodes
+  enable_private_endpoint           = var.gke_enable_private_endpoint
   enable_master_authorized_networks = var.gke_enable_master_authorized_networks
   master_authorized_networks_cidrs  = var.gke_master_authorized_networks_cidrs
-  workload_pool                  = "${var.project_id}.svc.id.goog"
-  node_pool_name                 = var.gke_node_pool_name
-  node_locations                 = var.gke_node_locations
-  node_machine_type              = var.gke_node_machine_type
-  node_disk_size_gb              = var.gke_node_disk_size_gb
-  node_disk_type                 = var.gke_node_disk_type
-  node_image_type                = var.gke_node_image_type
-  node_preemptible               = var.gke_node_preemptible
-  node_min_count                 = var.gke_node_min_count
-  node_max_count                 = var.gke_node_max_count
-  node_service_account_email     = module.iam.node_service_account_email
-  node_labels                    = var.gke_node_labels
-  node_tags                      = var.gke_node_tags
+  workload_pool                     = "${var.project_id}.svc.id.goog"
+  node_pool_name                    = var.gke_node_pool_name
+  node_locations                    = var.gke_node_locations
+  node_machine_type                 = var.gke_node_machine_type
+  node_disk_size_gb                 = var.gke_node_disk_size_gb
+  node_disk_type                    = var.gke_node_disk_type
+  node_image_type                   = var.gke_node_image_type
+  node_preemptible                  = var.gke_node_preemptible
+  node_min_count                    = var.gke_node_min_count
+  node_max_count                    = var.gke_node_max_count
+  node_service_account_email        = module.iam.node_service_account_email
+  node_labels                       = var.gke_node_labels
+  node_tags                         = var.gke_node_tags
 }
 
-resource "google_compute_global_address" "ingress_ip" {
-  name = var.ingress_global_ip_name
+resource "google_compute_address" "ingress_ip" {
+  name   = var.ingress_global_ip_name
+  region = var.subnet_region
 }
