@@ -19,7 +19,7 @@ enable_nat_logging                    = false
 network_labels                        = { env = "test", stack = "gke" }
 
 # IAM
-project_id                          = "your-gcp-project-id"
+project_id                          = "porfolio-480111"
 node_service_account_name           = "gke-node-sa"
 node_service_account_display_name   = "GKE Node Service Account"
 node_service_account_description    = "Node SA for GKE test cluster"
@@ -29,7 +29,6 @@ node_service_account_roles          = [
   "roles/artifactregistry.reader"
 ]
 
-# Artifact Registry
 artifact_repositories = [
   {
     repository_id = "workout-backend"
