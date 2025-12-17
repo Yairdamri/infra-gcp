@@ -16,7 +16,4 @@ resource "google_artifact_registry_repository" "this" {
     }
   }
 
-  lifecycle {
-    prevent_destroy = true
-  }
 }

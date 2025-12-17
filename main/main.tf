@@ -74,3 +74,34 @@ resource "google_compute_address" "ingress_ip" {
   name   = var.ingress_global_ip_name
   region = var.subnet_region
 }
+
+# External Secrets: allow WI and Secret Manager access for the GSA
+resource "google_service_account_iam_member" "external_secrets_wi" {
+  count              = var.external_secrets_gsa_email == null ? 0 : 1
+  service_account_id = "projects/${var.project_id}/serviceAccounts/${var.external_secrets_gsa_email}"
+  role               = "roles/iam.workloadIdentityUser"
+  member             = "serviceAccount:${var.project_id}.svc.id.goog[external-secrets/external-secrets]"
+}
+
+resource "google_project_iam_member" "external_secrets_sm" {
+  count   = var.external_secrets_gsa_email == null ? 0 : 1
+  project = var.project_id
+  role    = "roles/secretmanager.secretAccessor"
+  member  = "serviceAccount:${var.external_secrets_gsa_email}"
+}
+
+module "argocd" {
+  source = "../modules/argocd-gcp"
+
+  namespace                = "argocd"
+  repo_url                 = "https://argoproj.github.io/argo-helm"
+  chart_name               = "argo-cd"
+  chart_version            = "5.51.6"
+  values                   = ""
+  applications_parent_path = "${path.root}/../../argocd/applications-parent.yaml"
+  infra_parent_path        = "${path.root}/../../argocd/infra-parent.yaml"
+
+  depends_on = [
+    module.gke
+  ]
+}
