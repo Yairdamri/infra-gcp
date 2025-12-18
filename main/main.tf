@@ -95,8 +95,8 @@ module "argocd" {
 
   namespace                = "argocd"
   repo_url                 = "https://argoproj.github.io/argo-helm"
-  chart_name               = "argo-cd"
-  chart_version            = "5.51.6"
+  # chart_name               = "argo-cd"
+  # chart_version            = "5.51.6"
   values                   = ""
   applications_parent_path = "${path.root}/../../argocd/applications-parent.yaml"
   infra_parent_path        = "${path.root}/../../argocd/infra-parent.yaml"
