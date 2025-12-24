@@ -3,7 +3,7 @@ output "argocd_namespace" {
   value       = var.namespace
 }
 
-output "argocd_release_name" {
-  description = "Argo CD Helm release name."
-  value       = helm_release.argocd.name
-}
+# output "argocd_release_name" {
+#   description = "Argo CD Helm release name."
+#   value       = helm_release.argocd.name
+# }

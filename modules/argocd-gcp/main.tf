@@ -1,25 +1,25 @@
-resource "helm_release" "argocd" {
-  name             = "argocd"
-  repository       = var.repo_url
-  chart            = "argo-cd"
-  namespace        = var.namespace
-  create_namespace = true
+# resource "helm_release" "argocd" {
+#   name             = "argocd"
+#   repository       = var.repo_url
+#   chart            = "argo-cd"
+#   namespace        = var.namespace
+#   create_namespace = true
 
-  set {
-    name  = "installCRDs"
-    value = "true"
-  }
+#   set {
+#     name  = "installCRDs"
+#     value = "true"
+#   }
 
-  values = var.values != "" ? [var.values] : []
-}
+#   values = var.values != "" ? [var.values] : []
+# }
 
 resource "time_sleep" "wait_for_crds" {
-  depends_on      = [helm_release.argocd]
+  # depends_on      = [helm_release.argocd]
   create_duration = var.wait_for_ready # consider bumping to "90s" or "120s"
 }
 
 resource "time_sleep" "wait_for_argocd" {
-  depends_on      = [helm_release.argocd]
+  # depends_on      = [helm_release.argocd]
   create_duration = var.wait_for_ready
 }
 
@@ -80,7 +80,7 @@ resource "kubernetes_secret" "k8s_repo" {
 
 resource "kubernetes_manifest" "applications_parent" {
   depends_on = [
-    helm_release.argocd,
+    # helm_release.argocd,
     time_sleep.wait_for_crds,
     time_sleep.wait_for_argocd,
   ]
@@ -89,7 +89,7 @@ resource "kubernetes_manifest" "applications_parent" {
 
 resource "kubernetes_manifest" "infra_parent" {
   depends_on = [
-    helm_release.argocd,
+    # helm_release.argocd,
     time_sleep.wait_for_crds,
     time_sleep.wait_for_argocd,
     kubernetes_manifest.applications_parent
