@@ -10,6 +10,7 @@ locals {
   zone      = local.root_cfg.locals.zone
 }
 
+# Environment-wide overrides or shared inputs can go here.
 inputs = {
   env = local.env
 }
